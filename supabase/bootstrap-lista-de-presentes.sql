@@ -38,12 +38,6 @@ create policy "Anyone can read gifts"
   to anon, authenticated
   using (true);
 
-create policy "Anyone can add gifts"
-  on public.gifts
-  for insert
-  to anon, authenticated
-  with check (true);
-
 revoke all on table public.gifts from anon, authenticated;
 
 grant select (
@@ -56,8 +50,6 @@ grant select (
   created_at,
   is_reserved
 ) on table public.gifts to anon, authenticated;
-
-grant insert on table public.gifts to anon, authenticated;
 
 create or replace function public.reserve_gift(p_gift_id uuid, p_buyer_name text)
 returns uuid

@@ -8,10 +8,3 @@ export type Gift = {
   isReserved: boolean
   createdAt: string
 }
-
-export type CreateGiftInput = {
-  title: string
-  imageUrl: string
-  productUrl: string
-  priceCents: number
-}

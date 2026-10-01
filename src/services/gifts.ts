@@ -1,6 +1,5 @@
-import { parseHttpUrl, parsePriceToCents } from "@/features/gifts/format"
 import { createSeedGifts, productImageUrl } from "@/features/gifts/seed"
-import type { CreateGiftInput, Gift } from "@/features/gifts/types"
+import type { Gift } from "@/features/gifts/types"
 import {
   createSupabaseBrowserClient,
   isSupabaseConfigured,
@@ -16,6 +15,9 @@ const replacedTitles = new Set([
   "Conjunto de taças",
   "Jogo de toalhas",
   "Teste item",
+  "Pinto de borracha",
+  "zOLPIDEM",
+  "Puteiro homossexual",
 ])
 
 type LocalGift = Gift & { reservationToken: string | null }
@@ -115,97 +117,6 @@ export async function listGifts(): Promise<Gift[]> {
     .map((gift) =>
       gift.imageUrl ? gift : { ...gift, imageUrl: productImageUrl(gift.productUrl) },
     )
-}
-
-async function nextSortOrder() {
-  if (!isSupabaseConfigured()) {
-    return localGifts.reduce((max, gift) => Math.max(max, gift.sortOrder), -1) + 1
-  }
-
-  const supabase = createSupabaseBrowserClient()
-  const { data, error } = await supabase
-    .from("gifts")
-    .select("sort_order")
-    .order("sort_order", { ascending: false })
-    .limit(1)
-
-  if (error) {
-    throw new Error(error.message)
-  }
-
-  if (!Array.isArray(data) || data.length === 0) {
-    return 0
-  }
-
-  const first = data[0]
-  if (!isRecord(first)) {
-    return 0
-  }
-
-  return readNumber(first.sort_order) + 1
-}
-
-export async function createGift(input: CreateGiftInput): Promise<Gift> {
-  const title = input.title.trim()
-  const imageUrl = parseHttpUrl(input.imageUrl)
-  const productUrl = parseHttpUrl(input.productUrl)
-  const priceCents = Number.isInteger(input.priceCents)
-    ? input.priceCents
-    : parsePriceToCents(String(input.priceCents))
-
-  if (title.length === 0 || title.length > 80) {
-    throw new Error("Dê um nome ao presente")
-  }
-
-  if (priceCents === null || priceCents <= 0 || priceCents > 10_000_000) {
-    throw new Error("Informe um valor válido")
-  }
-
-  if (!productUrl) {
-    throw new Error("Informe o link da loja")
-  }
-
-  if (!imageUrl) {
-    throw new Error("Informe o link da imagem")
-  }
-
-  const sortOrder = await nextSortOrder()
-  const payload = {
-    title,
-    image_url: imageUrl,
-    product_url: productUrl,
-    price_cents: priceCents,
-    sort_order: sortOrder,
-  }
-
-  if (!isSupabaseConfigured()) {
-    const gift: LocalGift = {
-      id: crypto.randomUUID(),
-      title: payload.title,
-      imageUrl: payload.image_url,
-      productUrl: payload.product_url,
-      priceCents: payload.price_cents,
-      sortOrder: payload.sort_order,
-      isReserved: false,
-      reservationToken: null,
-      createdAt: new Date().toISOString(),
-    }
-    localGifts = [...localGifts, gift]
-    return toPublicGift(gift)
-  }
-
-  const supabase = createSupabaseBrowserClient()
-  const { data, error } = await supabase
-    .from("gifts")
-    .insert(payload)
-    .select(GIFT_COLUMNS)
-    .single()
-
-  if (error) {
-    throw new Error(error.message)
-  }
-
-  return parseGift(data)
 }
 
 export type ReserveGiftResult = {

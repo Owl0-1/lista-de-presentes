@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { AddGiftDialog } from "@/features/gifts/components/add-gift-dialog"
 import { HostAvatar } from "@/features/gifts/components/host-avatar"
 import { GiftList } from "@/features/gifts/components/gift-list"
 import { ReserveDialog } from "@/features/gifts/components/reserve-dialog"
@@ -47,33 +46,30 @@ export function WishlistScreen() {
             </p>
           </div>
         </section>
-        <header className="mt-5 flex flex-col gap-4 border-b-4 border-[var(--pixel-line)] pb-5 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <h1 className="font-display text-[0.7rem] leading-[1.8] text-balance sm:text-xs">
-              {wishlistCopy.title}
-            </h1>
-            {gifts.length > 0 ? (
-              <p className="mt-3 flex flex-wrap items-center gap-2 text-base text-[var(--pixel-gold)]">
-                <span>{wishlistCopy.quest}</span>
-                <span className="flex gap-1" aria-hidden="true">
-                  {gifts.map((gift) => (
-                    <span
-                      key={gift.id}
-                      className={
-                        gift.isReserved
-                          ? "size-3 border-2 border-[var(--pixel-line)] bg-[var(--pixel-mint)]"
-                          : "size-3 border-2 border-[var(--pixel-line)] bg-[var(--pixel-bg)]"
-                      }
-                    />
-                  ))}
-                </span>
-                <span>
-                  {reservedCount}/{gifts.length}
-                </span>
-              </p>
-            ) : null}
-          </div>
-          <AddGiftDialog />
+        <header className="mt-5 border-b-4 border-[var(--pixel-line)] pb-5">
+          <h1 className="font-display text-[0.7rem] leading-[1.8] text-balance sm:text-xs">
+            {wishlistCopy.title}
+          </h1>
+          {gifts.length > 0 ? (
+            <p className="mt-3 flex flex-wrap items-center gap-2 text-base text-[var(--pixel-gold)]">
+              <span>{wishlistCopy.quest}</span>
+              <span className="flex gap-1" aria-hidden="true">
+                {gifts.map((gift) => (
+                  <span
+                    key={gift.id}
+                    className={
+                      gift.isReserved
+                        ? "size-3 border-2 border-[var(--pixel-line)] bg-[var(--pixel-mint)]"
+                        : "size-3 border-2 border-[var(--pixel-line)] bg-[var(--pixel-bg)]"
+                    }
+                  />
+                ))}
+              </span>
+              <span>
+                {reservedCount}/{gifts.length}
+              </span>
+            </p>
+          ) : null}
         </header>
         <GiftList
           gifts={gifts}

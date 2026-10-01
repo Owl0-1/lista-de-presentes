@@ -3,9 +3,9 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { forgetMyReservation, rememberMyReservation } from "@/features/gifts/my-reservations"
 import { createSeedGifts } from "@/features/gifts/seed"
-import type { CreateGiftInput, Gift } from "@/features/gifts/types"
+import type { Gift } from "@/features/gifts/types"
 import { isSupabaseConfigured } from "@/lib/supabase/client"
-import { createGift, listGifts, releaseGift, reserveGift } from "@/services/gifts"
+import { listGifts, releaseGift, reserveGift } from "@/services/gifts"
 
 export const giftQueryKey = ["gifts"] as const
 
@@ -17,19 +17,6 @@ export function useGifts() {
     queryFn: listGifts,
     staleTime: configured ? 15_000 : Infinity,
     ...(configured ? {} : { initialData: createSeedGifts() }),
-  })
-}
-
-export function useCreateGift() {
-  const queryClient = useQueryClient()
-
-  return useMutation({
-    mutationFn: (input: CreateGiftInput) => createGift(input),
-    onSuccess: async (gift) => {
-      queryClient.setQueryData<Gift[]>(giftQueryKey, (current) =>
-        [...(current ?? []), gift].sort((left, right) => left.sortOrder - right.sortOrder),
-      )
-    },
   })
 }
 
