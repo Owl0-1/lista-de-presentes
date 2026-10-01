@@ -27,7 +27,7 @@ export function ProductImage({
         <img
           src={src}
           alt=""
-          className="block size-full object-cover"
+          className="block size-full bg-white object-contain"
           onError={() => setFailed(true)}
         />
       )}

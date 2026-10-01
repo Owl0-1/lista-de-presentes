@@ -1,5 +1,5 @@
 import { parseHttpUrl, parsePriceToCents } from "@/features/gifts/format"
-import { createSeedGifts } from "@/features/gifts/seed"
+import { createSeedGifts, productImageUrl } from "@/features/gifts/seed"
 import type { CreateGiftInput, Gift } from "@/features/gifts/types"
 import {
   createSupabaseBrowserClient,
@@ -8,6 +8,15 @@ import {
 
 const GIFT_COLUMNS =
   "id, title, image_url, product_url, price_cents, sort_order, created_at, is_reserved"
+
+const replacedTitles = new Set([
+  "Cafeteira elétrica",
+  "Jogo de panelas",
+  "Jogo de cama casal",
+  "Conjunto de taças",
+  "Jogo de toalhas",
+  "Teste item",
+])
 
 type LocalGift = Gift & { reservationToken: string | null }
 
@@ -100,7 +109,12 @@ export async function listGifts(): Promise<Gift[]> {
     throw new Error("Resposta inválida")
   }
 
-  return data.map(parseGift)
+  return data
+    .map(parseGift)
+    .filter((gift) => !replacedTitles.has(gift.title))
+    .map((gift) =>
+      gift.imageUrl ? gift : { ...gift, imageUrl: productImageUrl(gift.productUrl) },
+    )
 }
 
 async function nextSortOrder() {

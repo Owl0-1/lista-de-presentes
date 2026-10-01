@@ -2,62 +2,89 @@ import type { Gift } from "@/features/gifts/types"
 
 const createdAt = "2026-01-01T00:00:00.000Z"
 
+const products: Array<Pick<Gift, "title" | "productUrl" | "priceCents" | "imageUrl">> = [
+  {
+    title: "Sagittarius Seiya FiguartsZERO",
+    productUrl: "https://www.amazon.com.br/dp/B0D2KH7C7K",
+    priceCents: 228986,
+    imageUrl: "https://m.media-amazon.com/images/I/717Txp6IwXL._AC_SL500_.jpg",
+  },
+  {
+    title: "Psicologia Forense",
+    productUrl: "https://www.amazon.com.br/dp/8536324309",
+    priceCents: 24108,
+    imageUrl: "https://m.media-amazon.com/images/I/91wAysoZqML._SL500_.jpg",
+  },
+  {
+    title: "Avaliação Psicológica no Contexto Forense",
+    productUrl: "https://www.amazon.com.br/dp/8582715943",
+    priceCents: 15780,
+    imageUrl: "https://m.media-amazon.com/images/I/81q1fktIVuL._SL500_.jpg",
+  },
+  {
+    title: "Freud: Neurose, psicose, perversão",
+    productUrl: "https://www.amazon.com.br/dp/8582179855",
+    priceCents: 6482,
+    imageUrl: "https://m.media-amazon.com/images/I/51AYcW75IAL._SL500_.jpg",
+  },
+  {
+    title: "Freud: Inibição, sintoma e angústia",
+    productUrl: "https://www.amazon.com.br/dp/6559287645",
+    priceCents: 6833,
+    imageUrl: "https://m.media-amazon.com/images/I/71-lPLMJltL._SL500_.jpg",
+  },
+  {
+    title: "iPad Air 13\" 128 GB",
+    productUrl: "https://www.amazon.com.br/dp/B0DZK3VZVH",
+    priceCents: 799990,
+    imageUrl: "https://m.media-amazon.com/images/I/51q7uCdqy2L._AC_SL500_.jpg",
+  },
+  {
+    title: "Baralho Black à prova d'água",
+    productUrl: "https://www.amazon.com.br/dp/B0FGKS1VTY",
+    priceCents: 4390,
+    imageUrl: "https://m.media-amazon.com/images/I/616maN3Gt0L._AC_SL500_.jpg",
+  },
+  {
+    title: "Bicicleta ergométrica spinning",
+    productUrl: "https://www.amazon.com.br/dp/B0FDS8R6DW",
+    priceCents: 85394,
+    imageUrl: "https://m.media-amazon.com/images/I/61ln+QG9IML._AC_SL500_.jpg",
+  },
+  {
+    title: "Sauvage Dior Eau de Parfum 200ml",
+    productUrl: "https://www.amazon.com.br/dp/B07PHSB4L9",
+    priceCents: 108196,
+    imageUrl: "https://m.media-amazon.com/images/I/61YGnWUxG0L._AC_SL500_.jpg",
+  },
+  {
+    title: "Kindle Paperwhite 16 GB",
+    productUrl: "https://www.amazon.com.br/dp/B0CFPL6CFY",
+    priceCents: 100957,
+    imageUrl: "https://m.media-amazon.com/images/I/81-vCHKJb1L._AC_SL500_.jpg",
+  },
+  {
+    title: "Relógio Casio LTP-V007L-9B",
+    productUrl: "https://www.amazon.com.br/dp/B08DJ1F7XH",
+    priceCents: 23339,
+    imageUrl: "https://m.media-amazon.com/images/I/51mge8lyG7L._AC_SL500_.jpg",
+  },
+]
+
+export function productImageUrl(productUrl: string | null) {
+  if (!productUrl) return null
+  return products.find((product) => product.productUrl === productUrl)?.imageUrl ?? null
+}
+
 export function createSeedGifts(): Gift[] {
-  return [
-    {
-      id: "00000000-0000-4000-8000-000000000001",
-      title: "Cafeteira elétrica",
-      imageUrl:
-        "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=480&h=480&q=80",
-      productUrl: "https://www.magazineluiza.com.br/busca/cafeteira+eletrica/",
-      priceCents: 24990,
-      sortOrder: 0,
-      isReserved: false,
-      createdAt,
-    },
-    {
-      id: "00000000-0000-4000-8000-000000000002",
-      title: "Jogo de panelas",
-      imageUrl:
-        "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=480&h=480&q=80",
-      productUrl: "https://www.magazineluiza.com.br/busca/jogo+de+panelas/",
-      priceCents: 39900,
-      sortOrder: 1,
-      isReserved: false,
-      createdAt,
-    },
-    {
-      id: "00000000-0000-4000-8000-000000000003",
-      title: "Jogo de cama casal",
-      imageUrl:
-        "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=480&h=480&q=80",
-      productUrl: "https://www.magazineluiza.com.br/busca/jogo+de+cama+casal/",
-      priceCents: 28990,
-      sortOrder: 2,
-      isReserved: false,
-      createdAt,
-    },
-    {
-      id: "00000000-0000-4000-8000-000000000004",
-      title: "Conjunto de taças",
-      imageUrl:
-        "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=480&h=480&q=80",
-      productUrl: "https://www.magazineluiza.com.br/busca/conjunto+de+tacas/",
-      priceCents: 12990,
-      sortOrder: 3,
-      isReserved: false,
-      createdAt,
-    },
-    {
-      id: "00000000-0000-4000-8000-000000000005",
-      title: "Jogo de toalhas",
-      imageUrl:
-        "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=480&h=480&q=80",
-      productUrl: "https://www.magazineluiza.com.br/busca/jogo+de+toalhas/",
-      priceCents: 15990,
-      sortOrder: 4,
-      isReserved: false,
-      createdAt,
-    },
-  ]
+  return products.map((product, index) => ({
+    id: `00000000-0000-4000-8000-${String(index + 1).padStart(12, "0")}`,
+    title: product.title,
+    imageUrl: product.imageUrl,
+    productUrl: product.productUrl,
+    priceCents: product.priceCents,
+    sortOrder: index,
+    isReserved: false,
+    createdAt,
+  }))
 }
